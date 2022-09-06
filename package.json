@@ -1,0 +1,35 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "lint": "npx eslint ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArtemBasharin/movies-explorer-api.git"
+  },
+  "keywords": [],
+  "author": "Artem Basharin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArtemBasharin/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/ArtemBasharin/movies-explorer-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^6.5.4",
+    "nodemon": "^2.0.19",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-promise": "^6.0.1"
+  }
+}
