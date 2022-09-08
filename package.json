@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ArtemBasharin/movies-explorer-api#readme",
   "dependencies": {
+    "airbnb": "^0.0.2",
     "bcryptjs": "^2.4.3",
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19",
