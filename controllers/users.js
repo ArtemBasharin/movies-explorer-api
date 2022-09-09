@@ -79,24 +79,6 @@ const updateUserInfo = (req, res, next) => {
     })
 }
 
-const updateUserAvatar = (req, res, next) => {
-  const { avatar } = req.body
-
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-    .then((user) => {
-      if (!user) {
-        return next(new PageNotFound('Пользователь не найден'))
-      }
-      return res.send({ user })
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadReqErr('При обновлении данных пользователя переданы неверные данные'))
-      }
-      return next(err)
-    })
-}
-
 const login = (req, res, next) => {
   const { email, password } = req.body
   return User.findUserByCredentials(email, password)

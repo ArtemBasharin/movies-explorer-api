@@ -22,9 +22,11 @@
   "dependencies": {
     "airbnb": "^0.0.2",
     "bcryptjs": "^2.4.3",
+    "express-winston": "^4.2.0",
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "eslint": "^8.23.0",
