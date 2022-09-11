@@ -1,3 +1,6 @@
+/* eslint-disable arrow-parens */
+/* eslint-disable semi */
+/* eslint-disable import/extensions */
 /* eslint-disable linebreak-style */
 const { celebrate, Joi } = require('celebrate');
 const isURL = require('validator/lib/isURL');
@@ -8,6 +11,7 @@ const validateUrl = (url) => {
   if (!isURL(url)) {
     throw new BadReqErr('Введен некорректный URL');
   }
+
   return url;
 };
 
@@ -41,20 +45,14 @@ const validateUpdateUser = celebrate({
   }),
 });
 
-const validateAvatar = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().custom(validateUrl).required(),
-  }),
-});
-
-const validationCard = celebrate({
+const validationMovie = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
     link: Joi.string().custom(validateUrl).required(),
   }),
 });
 
-const validateCardId = celebrate({
+const validateMovieId = celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().length(24).hex().required(),
   }),
@@ -65,7 +63,6 @@ module.exports = {
   validateUser,
   validateUserId,
   validateUpdateUser,
-  validateAvatar,
-  validationCard,
-  validateCardId,
+  validationMovie,
+  validateMovieId,
 };
