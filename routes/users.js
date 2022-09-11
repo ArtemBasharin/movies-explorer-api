@@ -1,12 +1,13 @@
+/* eslint-disable import/extensions */
 const router = require('express').Router()
 
 const {
   updateUserInfo,
-  getCurrentUser
+  getCurrentUser,
 } = require('../controllers/users')
 
 const {
-  validateUpdateUser
+  validateUpdateUser,
 } = require('../middlewares/validation')
 
 router.get('/users/me', getCurrentUser)

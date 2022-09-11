@@ -6,12 +6,9 @@ module.exports = {
   extends: [
     'airbnb',
     'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:effector/recommended',
     'plugin:effector/scope',
   ],
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -20,8 +17,6 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    'react',
-    '@typescript-eslint',
     'simple-import-sort',
     'effector',
   ],
@@ -109,25 +104,6 @@ module.exports = {
       },
       { blankLine: 'always', prev: 'multiline-const', next: '*' },
     ],
-    'react/function-component-definition': [
-      'warn',
-      { namedComponents: 'arrow-function' },
-    ],
-    'react/jsx-filename-extension': [
-      'warn',
-      {
-        extensions: ['.tsx'],
-      },
-    ],
-    'react/jsx-one-expression-per-line': 'off',
-    'react/prop-types': 'off',
-    // unnecessary rules https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
-    'react/jsx-uses-react': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react/require-default-props': 'off',
-    'jsx-a11y/click-events-have-key-events': 'off',
-    'jsx-a11y/interactive-supports-focus': 'off',
-    'class-methods-use-this': 'off',
     'no-underscore-dangle': [
       'error',
       {
@@ -137,33 +113,5 @@ module.exports = {
         ],
       },
     ],
-    camelcase: 'off',
-    '@typescript-eslint/type-annotation-spacing': ['warn',
-      {
-        after: true,
-      },
-    ],
-    '@typescript-eslint/member-delimiter-style': [
-      'warn',
-      {
-        multiline: {
-          delimiter: 'none',
-        },
-        singleline: {
-          delimiter: 'comma',
-        },
-      },
-    ],
-    'jsx-a11y/label-has-associated-control': ['error', {
-      required: {
-        some: ['nesting', 'id'],
-      },
-    }],
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {},
-    },
   },
 }
-

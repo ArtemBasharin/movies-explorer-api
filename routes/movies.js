@@ -5,7 +5,7 @@ const {
   getMovie,
   postMovie,
   deleteMovie
-} = require('../controllers/cards')
+} = require('../controllers/movies')
 
 const {
   validationMovie,
