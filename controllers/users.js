@@ -1,3 +1,7 @@
+/* eslint-disable arrow-parens */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable linebreak-style */
+/* eslint-disable import/extensions */
 /* eslint-disable indent */
 /* eslint-disable linebreak-style */
 require('dotenv').config()
@@ -42,13 +46,13 @@ const createUser = (req, res, next) => {
       about: req.body.about,
       avatar: req.body.avatar,
       email: req.body.email,
-      password: hash
+      password: hash,
     }))
     .then((user) => res.send({
       name: user.name,
       about: user.about,
       avatar: user.avatar,
-      email: user.email
+      email: user.email,
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -86,12 +90,12 @@ const login = (req, res, next) => {
     const token = jwt.sign(
       { _id: user._id },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     )
     res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
-      domain: 'artbash.nomoredomains.sbs'
+      domain: 'movex.nomoredomains.sbs',
     })
       .send({ token })
   })
@@ -118,8 +122,7 @@ module.exports = {
   getUserById,
   createUser,
   updateUserInfo,
-  updateUserAvatar,
   login,
   getCurrentUser,
-  logout
+  logout,
 }

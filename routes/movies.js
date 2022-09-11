@@ -1,15 +1,16 @@
+/* eslint-disable import/extensions */
 /* eslint-disable linebreak-style */
 const router = require('express').Router()
 
 const {
   getMovie,
   postMovie,
-  deleteMovie
+  deleteMovie,
 } = require('../controllers/movies')
 
 const {
   validationMovie,
-  validateMovieId
+  validateMovieId,
 } = require('../middlewares/validation')
 
 router.get('/movies', getMovie)
