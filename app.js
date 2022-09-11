@@ -3,7 +3,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable linebreak-style */
 /* eslint-disable no-unused-vars */
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -31,14 +31,14 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(requestLogger);
-app.use(cors({
-  origin: [
-    'http://localhost:3001',
-    'https://movex.nomoredomains.sbs',
-    'http://movex.nomoredomains.sbs',
-  ],
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: [
+//     'http://localhost:3001',
+//     'https://movex.nomoredomains.sbs',
+//     'http://movex.nomoredomains.sbs',
+//   ],
+//   credentials: true,
+// }));
 
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateUser, createUser);
