@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable semi */
+/* eslint-disable linebreak-style */
 const errorsHandler = (err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res
