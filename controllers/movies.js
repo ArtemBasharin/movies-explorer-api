@@ -1,24 +1,38 @@
-/* eslint-disable arrow-parens */
-/* eslint-disable semi */
-/* eslint-disable import/extensions */
-/* eslint-disable linebreak-style */
 const BadReqErr = require('../errors/BadReqErr');
 const PageNotFound = require('../errors/PageNotFound');
 const ForbidErr = require('../errors/ForbidErr');
 
 const Movie = require('../models/movie');
 
-const getMovie = (_, res, next) => {
-  Movie.find({})
-    .then((movies) => res.send({ movies }))
-    .catch(next);
-};
-
 const postMovie = (req, res, next) => {
-  const { name, link } = req.body;
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
   const owner = req.user._id;
-
-  Movie.create({ name, link, owner })
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner,
+  })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -31,7 +45,6 @@ const postMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
-
   return Movie.findById(movieId)
     .orFail(() => {
       throw new PageNotFound('Карточка не найдена');
@@ -52,9 +65,14 @@ const deleteMovie = (req, res, next) => {
     });
 };
 
+const getMovies = (req, res, next) => {
+  Movie.find({ owner: req.user._id })
+    .then((movies) => res.send({ movies }))
+    .catch(next);
+};
+
 module.exports = {
-  getMovie,
+  getMovies,
   postMovie,
   deleteMovie,
-
 };

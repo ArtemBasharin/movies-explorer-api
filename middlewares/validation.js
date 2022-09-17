@@ -1,7 +1,3 @@
-/* eslint-disable arrow-parens */
-/* eslint-disable semi */
-/* eslint-disable import/extensions */
-/* eslint-disable linebreak-style */
 const { celebrate, Joi } = require('celebrate');
 const isURL = require('validator/lib/isURL');
 

@@ -1,18 +1,12 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable semi */
-/* eslint-disable import/extensions */
-/* eslint-disable linebreak-style */
-/* eslint-disable no-unused-vars */
-// require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const cors = require('cors');
+// const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
+const rateLimiter = require('./middlewares/rateLimiter');
 const auth = require('./middlewares/auth');
 const errHandler = require('./middlewares/errHandler');
 const { validateLogin, validateUser } = require('./middlewares/validation');
@@ -20,17 +14,20 @@ const PageNotFound = require('./errors/PageNotFound');
 const { login, createUser, logout } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV, DB_ENV } = process.env;
 
 const app = express();
 app.use(helmet());
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
-
+mongoose.connect(NODE_ENV === 'production' ? DB_ENV : 'mongodb://localhost:27017/moviesdb', {
+  useNewUrlParser: true,
+});
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(rateLimiter);
 // app.use(cors({
 //   origin: [
 //     'http://localhost:3001',
@@ -42,10 +39,10 @@ app.use(requestLogger);
 
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateUser, createUser);
-app.get('/signout', logout);
 app.use(auth);
-app.use(usersRouter);
-app.use(moviesRouter);
+app.get('/signout', logout);
+app.use('/users', require('./routes/users'));
+app.use('/movies', require('./routes/movies'));
 
 app.use('/', (req, res, next) => {
   next(new PageNotFound('Страница не найдена'));
@@ -54,6 +51,5 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errHandler);
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 });

@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 class ConflictReqErr extends Error {
   constructor(message) {
     super(message);
