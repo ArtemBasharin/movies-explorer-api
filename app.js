@@ -9,9 +9,7 @@ const helmet = require('helmet');
 const rateLimiter = require('./middlewares/rateLimiter');
 const auth = require('./middlewares/auth');
 const errHandler = require('./middlewares/errHandler');
-const { validateLogin, validateUser } = require('./middlewares/validation');
-const PageNotFound = require('./errors/PageNotFound');
-const { login, createUser, logout } = require('./controllers/users');
+const matchRoutes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000, NODE_ENV, DB_ENV } = process.env;
@@ -37,16 +35,8 @@ app.use(rateLimiter);
 //   credentials: true,
 // }));
 
-app.post('/signin', validateLogin, login);
-app.post('/signup', validateUser, createUser);
 app.use(auth);
-app.get('/signout', logout);
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'));
-
-app.use('/', (req, res, next) => {
-  next(new PageNotFound('Страница не найдена'));
-});
+matchRoutes(app);
 app.use(errorLogger);
 app.use(errors());
 app.use(errHandler);

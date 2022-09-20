@@ -13,12 +13,13 @@ const postMovie = (req, res, next) => {
     description,
     image,
     trailerLink,
+    thumbnail,
     nameRU,
     nameEN,
-    thumbnail,
-    movieId,
   } = req.body;
+
   const owner = req.user._id;
+
   Movie.create({
     country,
     director,
@@ -27,19 +28,23 @@ const postMovie = (req, res, next) => {
     description,
     image,
     trailerLink,
+    thumbnail,
     nameRU,
     nameEN,
-    thumbnail,
-    movieId,
     owner,
   })
-    .then((movie) => res.send({ data: movie }))
+    .then((movie) => res.send({
+      ...movie,
+      movieId: movie._id,
+    }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadReqErr('Данные новой карточки невалидны'));
+        next(
+          new BadReqErr(`Данные новой карточки невалидны.${err.message}`),
+        );
       }
 
-      return next(err);
+      next(err);
     });
 };
 
@@ -67,7 +72,7 @@ const deleteMovie = (req, res, next) => {
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .then((movies) => res.send({ movies }))
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 

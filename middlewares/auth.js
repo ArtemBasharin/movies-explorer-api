@@ -6,17 +6,37 @@ require('dotenv').config();
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-module.exports = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (!token) {
+const getAuthToken = (req) => {
+  if (
+    !req
+    || !req.headers
+    || typeof req.headers.authorization !== 'string'
+    || req.headers.authorization.match(/^Bearer /) === null
+  ) {
     throw new AuthErr('Необходима авторизация');
   }
+
+  return req.headers.authorization.split(' ')[1];
+};
+
+module.exports = (req, res, next) => {
+  if (['/signin', '/signup'].includes(req.url)) {
+    next();
+    return;
+  }
+
   let payload;
+
   try {
+    const token = getAuthToken(req);
+
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key');
   } catch (err) {
-    return next(new AuthErr('Необходима авторизация'));
+    next(new AuthErr('Необходима авторизация'));
+    return;
   }
+
   req.user = payload;
-  return next();
+
+  next();
 };

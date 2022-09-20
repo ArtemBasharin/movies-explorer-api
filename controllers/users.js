@@ -13,7 +13,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUsers = (_, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -23,7 +23,7 @@ const getUserById = (req, res, next) => {
       if (!user) {
         return next(new PageNotFound('Пользователь не найден'));
       }
-      return res.send({ data: user });
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -64,7 +64,7 @@ const updateUserInfo = (req, res, next) => {
       if (!user) {
         throw new PageNotFound('Пользователь не найден');
       }
-      res.send({ data: user });
+      res.send(user);
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
@@ -79,23 +79,20 @@ const updateUserInfo = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-        { expiresIn: '7d' },
-      );
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-        domain: 'movex.nomoredomains.sbs',
-      })
-        .send({
+        {
           _id: user._id,
           name: user.name,
           email: user.email,
-        });
+        },
+        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+        { expiresIn: '7d' },
+      );
+
+      res.send({ token });
     })
     .catch(next);
 };
@@ -106,13 +103,9 @@ const getCurrentUser = (req, res, next) => {
       if (!user) {
         return next(new PageNotFound('Пользователь не найден'));
       }
-      return res.send({ data: user });
+      return res.send(user);
     })
     .catch((err) => next(err));
-};
-
-const logout = (req, res) => {
-  res.clearCookie('jwt').send({ message: 'Вы вышли из системы' });
 };
 
 module.exports = {
@@ -122,5 +115,4 @@ module.exports = {
   updateUserInfo,
   login,
   getCurrentUser,
-  logout,
 };
