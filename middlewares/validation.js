@@ -20,7 +20,7 @@ const validateLogin = celebrate({
 
 const validateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -51,6 +51,7 @@ const validationMovie = celebrate({
     thumbnail: Joi.string().custom(validateUrl).required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
+    movieId: Joi.number().required(),
   }),
 });
 

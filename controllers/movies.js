@@ -16,6 +16,7 @@ const postMovie = (req, res, next) => {
     thumbnail,
     nameRU,
     nameEN,
+    movieId,
   } = req.body;
 
   const owner = req.user._id;
@@ -32,16 +33,15 @@ const postMovie = (req, res, next) => {
     nameRU,
     nameEN,
     owner,
+    movieId,
   })
-    .then((movie) => res.send({
-      ...movie,
-      movieId: movie._id,
-    }))
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
           new BadReqErr(`Данные новой карточки невалидны.${err.message}`),
         );
+        return;
       }
 
       next(err);
