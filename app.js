@@ -42,6 +42,8 @@ app.use(
       "http://localhost:3000",
       "https://movex.nomoredomains.sbs",
       "http://movex.nomoredomains.sbs",
+      "http://api.movex.nomoredomains.sbs",
+      "https://api.movex.nomoredomains.sbs",
     ],
     credentials: true,
   })
