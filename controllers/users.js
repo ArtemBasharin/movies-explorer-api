@@ -34,23 +34,34 @@ const getUserById = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: hash,
-    }))
-    .then((user) => res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    }))
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) =>
+      User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: hash,
+      }),
+    )
+    .then((user) =>
+      res.send({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      }),
+    )
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadReqErr('При обновлении данных пользователя переданы неверные данные'));
+        return next(
+          new BadReqErr(
+            'При обновлении данных пользователя переданы неверные данные',
+          ),
+        );
       }
       if (err.code === 11000) {
-        return next(new ConflictReqErr('Пользователь с таким email уже существует'));
+        return next(
+          new ConflictReqErr('Пользователь с таким email уже существует'),
+        );
       }
       return next(err);
     });
@@ -59,7 +70,11 @@ const createUser = (req, res, next) => {
 const updateUserInfo = (req, res, next) => {
   const { name, email } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, email }, { runValidators: true, new: true })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, email },
+    { runValidators: true, new: true },
+  )
     .then((user) => {
       if (!user) {
         throw new PageNotFound('Пользователь не найден');
@@ -71,7 +86,9 @@ const updateUserInfo = (req, res, next) => {
         return next(new BadReqErr('Введены некорректные данные'));
       }
       if (error.code === 11000) {
-        return next(new ConflictReqErr('Пользователь с таким email уже существует'));
+        return next(
+          new ConflictReqErr('Пользователь с таким email уже существует'),
+        );
       }
       return next(error);
     });

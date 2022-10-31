@@ -8,10 +8,10 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getAuthToken = (req) => {
   if (
-    !req
-    || !req.headers
-    || typeof req.headers.authorization !== 'string'
-    || req.headers.authorization.match(/^Bearer /) === null
+    !req ||
+    !req.headers ||
+    typeof req.headers.authorization !== 'string' ||
+    req.headers.authorization.match(/^Bearer /) === null
   ) {
     throw new AuthErr('Необходима авторизация');
   }
@@ -30,7 +30,10 @@ module.exports = (req, res, next) => {
   try {
     const token = getAuthToken(req);
 
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key');
+    payload = jwt.verify(
+      token,
+      NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+    );
   } catch (err) {
     next(new AuthErr('Необходима авторизация'));
     return;

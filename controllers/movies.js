@@ -38,9 +38,7 @@ const postMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(
-          new BadReqErr(`Данные новой карточки невалидны.${err.message}`),
-        );
+        next(new BadReqErr(`Данные новой карточки невалидны.${err.message}`));
         return;
       }
 
